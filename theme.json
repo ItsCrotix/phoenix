@@ -1,0 +1,14 @@
+{
+  "primary": {
+    "primary-light": "#333333",
+    "primary-color": "#242424",
+    "primary-dark": "#1E1E1E",
+    "primary-accent": "#689F38",
+    "primary-accent-light": "#B4CF9C",
+    "primary-contrast": "#FFFFFF",
+    "priamry-text": "#FFFFFF",
+    "primary-text-alternate": "#EEEEEE",
+    "primary-background": "#23232C",
+    "primary-background-alternate": "#1E1E26"
+  }
+}
