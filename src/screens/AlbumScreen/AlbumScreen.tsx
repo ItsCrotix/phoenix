@@ -147,7 +147,7 @@ const AlbumScreen = ({ route }) => {
             }}
             contentContainerStyle={{
               backgroundColor: "#1E1E26",
-              paddingBottom: 50,
+              paddingBottom: album.tracks.length <= 3 ? 300 : 100,
             }}
           >
             <LinearGradient

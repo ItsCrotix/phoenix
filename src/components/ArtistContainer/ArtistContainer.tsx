@@ -32,7 +32,6 @@ const ArtistContainer = ({ navigation }) => {
           }
         });
         setArtists(artists);
-        console.log(artists);
       })
       .catch((error) => {
         console.log(error);

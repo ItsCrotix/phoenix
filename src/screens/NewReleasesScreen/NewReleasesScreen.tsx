@@ -14,68 +14,26 @@ const NewReleasesScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const albums = [];
-    fetch("https://radiophoenix.nu/secure/channel/popular-albums", {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        const albums = response.channel.content.data;
-
-        albums.forEach((album) => {
-          const image: string = album.image;
-          if (!image.startsWith("https://radiophoenix.nu/")) {
-            album.image = "https://radiophoenix.nu/" + album.image;
-          }
-          albums.push(album);
-        });
-      });
-
-    fetch(
-      "https://radiophoenix.nu/secure/channel/1?returnContentOnly=true&filter=&page=2",
-      {
+    const getData = async () => {
+      const raw = await fetch("https://radiophoenix.nu/secure/channel/2?=2", {
         method: "GET",
-      }
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        const albums = response.channel.content.data;
-
-        albums.forEach((album) => {
-          const image: string = album.image;
-          if (!image.startsWith("https://radiophoenix.nu/")) {
-            album.image = "https://radiophoenix.nu/" + album.image;
-          }
-          albums.push(album);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
+      });
+      const response = await raw.json();
+      const albums = response.channel.content.data;
+      albums.forEach((album) => {
+        const image: string = album.image;
+        if (!image.startsWith("https://radiophoenix.nu/")) {
+          album.image = "https://radiophoenix.nu/" + album.image;
+        }
       });
 
-    fetch(
-      "https://radiophoenix.nu/secure/channel/1?returnContentOnly=true&filter=&page=3",
-      {
-        method: "GET",
-      }
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        const albums = response.channel.content.data;
+      setNewReleases([...newReleases, ...albums]);
+    };
+    getData().then(() => {
+      setLoading(false);
+    });
 
-        albums.forEach((album) => {
-          const image: string = album.image;
-          if (!image.startsWith("https://radiophoenix.nu/")) {
-            album.image = "https://radiophoenix.nu/" + album.image;
-          }
-          albums.push(album);
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    setNewReleases(albums);
+    getData();
   }, []);
 
   return (
