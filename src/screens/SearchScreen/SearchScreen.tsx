@@ -1,20 +1,48 @@
 import {
+  Keyboard,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Icon } from "@rneui/base";
 
 const SearchScreen = ({ navigation }) => {
   const searchInput = useRef();
+  const [searchText, setSearchText] = useState("");
+  const [searchResults, setSearchResults] = useState();
+  const [loading, setLoading] = useState(true);
+  const [timeSpan, setTimeSpan] = useState(0);
 
   useEffect(() => {
     searchInput.current.focus();
   }, []);
+
+  const search = () => {
+    setLoading(true);
+    console.log("searching for " + searchText);
+    fetch(
+      "https://radiophoenix.nu/secure/search?limit=3&types=artist,album,track,user,playlist&query=" +
+        searchText,
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        setSearchResults(response.results);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <SafeAreaView style={styles.saContainer} edges={["top"]}>
@@ -28,6 +56,12 @@ const SearchScreen = ({ navigation }) => {
               placeholder={"Zoeken"}
               selectionColor={"white"}
               placeholderTextColor={"white"}
+              value={searchText}
+              returnKeyType="search"
+              onSubmitEditing={search}
+              onChangeText={(text) => {
+                setSearchText(text);
+              }}
             />
           </View>
           <View style={styles.backContainer}>
@@ -35,6 +69,44 @@ const SearchScreen = ({ navigation }) => {
               <Text style={{ color: "white" }}>annuleren</Text>
             </TouchableOpacity>
           </View>
+        </View>
+        <View style={{ padding: 5, flex: 1, width: "100%" }}>
+          <Text style={{ color: "white", fontSize: 18 }}>Artists</Text>
+          <ScrollView>
+            {searchResults && searchResults.artists
+              ? searchResults.artists.map((artist) => {
+                  return <Text style={{ color: "white" }}>{artist.name}</Text>;
+                })
+              : null}
+          </ScrollView>
+        </View>
+        <View style={{ padding: 5, flex: 1, width: "100%" }}>
+          <Text style={{ color: "white", fontSize: 18 }}>Songs</Text>
+          <ScrollView>
+            {searchResults && searchResults.tracks
+              ? searchResults.tracks.map((track) => {
+                  return <Text style={{ color: "white" }}>{track.name}</Text>;
+                })
+              : null}
+          </ScrollView>
+        </View>
+        <View style={{ padding: 5, flex: 1, width: "100%" }}>
+          <Text style={{ color: "white", fontSize: 18 }}>Albums</Text>
+          <ScrollView>
+            {searchResults && searchResults.albums
+              ? searchResults.albums.map((album) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("album", { id: album.id })
+                      }
+                    >
+                      <Text style={{ color: "white" }}>{album.name}</Text>
+                    </TouchableOpacity>
+                  );
+                })
+              : null}
+          </ScrollView>
         </View>
       </View>
     </SafeAreaView>

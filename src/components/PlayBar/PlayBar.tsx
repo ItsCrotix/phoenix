@@ -3,31 +3,29 @@ import React from "react";
 import { Icon, LinearProgress, Image } from "@rneui/base";
 import { useAppSelector } from "../../utils/hooks/useAppSelector";
 import {
-  selectAlbum,
-  selectDuration,
   selectIsPlaying,
-  selectTimeElapsed,
   selectTrack,
-  selectTrackAlbum,
 } from "../../utils/redux/reducers/musicReducer";
+import { useProgress } from "react-native-track-player";
+import { useNavigation } from "@react-navigation/native";
+
 const PlayBar = ({ onPressPlay }) => {
   const track = useAppSelector(selectTrack);
-  const album = useAppSelector(selectTrackAlbum);
   const playing = useAppSelector(selectIsPlaying);
-  const timeElapsed = useAppSelector(selectTimeElapsed);
-  const duration = useAppSelector(selectDuration);
+  const progress = useProgress();
+  const navigation = useNavigation();
   if (!track) {
     return null;
   }
 
   return (
-    <>
+    <TouchableOpacity onPress={() => navigation.navigate("song")}>
       <View style={styles.container}>
         <View style={styles.buttonView}>
           <View style={{ flexDirection: "row" }}>
             <Image
               style={{ height: 40, width: 40, borderRadius: 10 }}
-              source={{ uri: album.image }}
+              source={{ uri: track.artwork }}
             />
             <View
               style={{
@@ -45,14 +43,14 @@ const PlayBar = ({ onPressPlay }) => {
                 }}
                 numberOfLines={1}
               >
-                {track.name}
+                {track.title}
               </Text>
               <Text
                 style={{ color: "white", fontSize: 12 }}
                 ellipsizeMode="tail"
                 numberOfLines={1}
               >
-                {track.artists.map((artist) => artist.name)}
+                {track.artist}
               </Text>
             </View>
           </View>
@@ -74,14 +72,14 @@ const PlayBar = ({ onPressPlay }) => {
         >
           <LinearProgress
             style={{ width: "95%" }}
-            value={timeElapsed / duration}
+            value={progress.position / progress.duration}
             variant="determinate"
             animation={false}
             color="#804a8d"
           />
         </View>
       </View>
-    </>
+    </TouchableOpacity>
   );
 };
 
@@ -94,6 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#23232C",
     borderRadius: 10,
     paddingTop: 10,
+    marginBottom: 20,
     alignItems: "center",
     justifyContent: "space-between",
     overflow: "hidden",

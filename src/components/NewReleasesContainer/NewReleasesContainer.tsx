@@ -1,5 +1,6 @@
 import {
   FlatList,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -52,7 +53,7 @@ const NewReleasesContainer = ({ navigation }) => {
         {loading
           ? null
           : newReleases.map((album, index) => {
-              if (index < 4)
+              if (index < 8)
                 return (
                   <TouchableOpacity
                     key={index}
@@ -69,7 +70,6 @@ const NewReleasesContainer = ({ navigation }) => {
                         width: "40%",
                         alignItems: "center",
                         justifyContent: "flex-end",
-                        // backgroundColor: "red",
                         paddingBottom: 10,
                         borderRadius: 10,
                       }}
@@ -85,11 +85,18 @@ const NewReleasesContainer = ({ navigation }) => {
       </View>
       <View style={{ width: "95%" }}>
         <TouchableOpacity onPress={() => navigation.navigate("newReleases")}>
-          <Text style={{ color: "white", textDecorationLine: "underline" }}>
-            Alle New Releases
+          <Text
+            style={{
+              color: "white",
+              textDecorationLine: "underline",
+              fontSize: 16,
+            }}
+          >
+            Alle Nieuwe Releases
           </Text>
         </TouchableOpacity>
       </View>
+      {Platform.OS === "android" ? <View style={{ height: 55 }} /> : null}
     </View>
   );
 };

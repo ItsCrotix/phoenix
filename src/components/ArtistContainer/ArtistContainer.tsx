@@ -1,5 +1,6 @@
 import {
   FlatList,
+  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -29,8 +30,9 @@ const ArtistContainer = ({ navigation }) => {
             artist.image_small =
               "https://radiophoenix.nu/" + artist.image_small;
           }
-          setArtists(artists);
         });
+        setArtists(artists);
+        console.log(artists);
       })
       .catch((error) => {
         console.log(error);
@@ -55,43 +57,51 @@ const ArtistContainer = ({ navigation }) => {
       >
         {loading
           ? null
-          : artists.map((item, index) => {
-              if (index < 4) {
+          : artists.map((artist, index) => {
+              if (index < 8)
                 return (
                   <TouchableOpacity
-                    style={styles.artistContainerItem}
                     key={index}
+                    style={styles.artistContainerItem}
+                    onPress={() =>
+                      navigation.navigate("artist", { id: artist.id })
+                    }
                   >
                     <View style={{ width: "60%" }}>
-                      <Text style={styles.artistName}>{item.name}</Text>
+                      <Text style={styles.artistName}>{artist.name}</Text>
                     </View>
                     <View
                       style={{
                         width: "40%",
                         alignItems: "center",
                         justifyContent: "flex-end",
-                        // backgroundColor: "red",
                         paddingBottom: 10,
                         borderRadius: 10,
                       }}
                     >
                       <Image
-                        source={{ uri: item.image_small }}
+                        source={{ uri: artist.image_small }}
                         style={styles.artistImage}
                       />
                     </View>
                   </TouchableOpacity>
                 );
-              }
             })}
       </View>
       <View style={{ width: "95%" }}>
         <TouchableOpacity onPress={() => navigation.navigate("artists")}>
-          <Text style={{ color: "white", textDecorationLine: "underline" }}>
+          <Text
+            style={{
+              color: "white",
+              textDecorationLine: "underline",
+              fontSize: 16,
+            }}
+          >
             Alle Verenigingen
           </Text>
         </TouchableOpacity>
       </View>
+      {Platform.OS === "android" ? <View style={{ height: 55 }} /> : null}
     </View>
   );
 };
@@ -102,7 +112,6 @@ const styles = StyleSheet.create({
   artistContainer: {
     alignItems: "center",
     width: "100%",
-    height: "40%",
     padding: 5,
     marginBottom: 35,
   },

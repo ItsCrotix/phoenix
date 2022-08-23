@@ -2,16 +2,21 @@
   "expo": {
     "name": "Phoenix",
     "slug": "Phoenix",
-    "version": "1.0.0",
+    "owner": "phoenix-su",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
+      "url": "https://u.expo.dev/4cdc2ae8-d757-4697-b300-6dfb971edd4f",
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
@@ -19,13 +24,16 @@
       "supportsTablet": false,
       "infoPlist": {
         "UIBackgroundModes": ["audio"]
-      }
+      },
+      "buildNumber": "3",
+      "bundleIdentifier": "com.necrotix.Phoenix"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.necrotix.Phoenix"
     },
     "web": {
       "favicon": "./assets/favicon.png"

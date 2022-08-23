@@ -63,10 +63,11 @@ const ArtistsScreen = ({ navigation }) => {
             marginVertical: 5,
           }}
           numColumns={2}
-          renderItem={({ item }) => (
+          renderItem={({ item, index }) => (
             <TouchableOpacity
+              key={index}
               style={styles.artistContainerItem}
-              // onPress={() => navigation.navigate("album", { id: item.id })}
+              onPress={() => navigation.navigate("artist", { id: item.id })}
             >
               <View style={{ width: "60%" }}>
                 <Text style={styles.artistName}>{item.name}</Text>
@@ -76,7 +77,6 @@ const ArtistsScreen = ({ navigation }) => {
                   width: "40%",
                   alignItems: "center",
                   justifyContent: "flex-end",
-                  // backgroundColor: "red",
                   paddingBottom: 10,
                   borderRadius: 10,
                 }}

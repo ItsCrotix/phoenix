@@ -8,6 +8,8 @@ import { View } from "react-native";
 import PlayBar from "../components/PlayBar/PlayBar";
 import NewReleasesScreen from "../screens/NewReleasesScreen/NewReleasesScreen";
 import ArtistsScreen from "../screens/ArtistsScreen/ArtistsScreen";
+import SongScreen from "../screens/SongScreen/SongScreen";
+import ArtistScreen from "../screens/ArtistScreen/ArtistScreen";
 
 const HomeNavigator = () => {
   const Stack = createNativeStackNavigator();
@@ -32,6 +34,14 @@ const HomeNavigator = () => {
         <Stack.Screen name="album" component={AlbumScreen} />
         <Stack.Screen name="newReleases" component={NewReleasesScreen} />
         <Stack.Screen name="artists" component={ArtistsScreen} />
+        <Stack.Screen name="artist" component={ArtistScreen} />
+        <Stack.Screen
+          name="song"
+          component={SongScreen}
+          options={{
+            presentation: "modal",
+          }}
+        />
       </Stack.Navigator>
     </>
   );

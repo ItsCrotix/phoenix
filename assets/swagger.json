@@ -1,0 +1,75 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Sherpa stats Api",
+    "version": "1"
+  },
+  "paths": {
+    "/v1/Tenant": {
+      "get": {
+        "tags": [
+          "Tenant"
+        ],
+        "parameters": [
+          {
+            "name": "x-sherpa-tenant",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TenantInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "TenantInfo": {
+        "type": "object",
+        "properties": {
+          "tenantName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "oauth2": {
+        "type": "oauth2",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://strawberry-identityserver.azurewebsites.net/connect/authorize",
+            "tokenUrl": "https://strawberry-identityserver.azurewebsites.net/connect/token",
+            "scopes": {
+              "sherpa-stats.api": "Sherpa stats"
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "oauth2": [
+        "sherpa-stats.api",
+        "tenants"
+      ]
+    }
+  ]
+}

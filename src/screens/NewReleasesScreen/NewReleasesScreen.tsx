@@ -14,6 +14,7 @@ const NewReleasesScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const albums = [];
     fetch("https://radiophoenix.nu/secure/channel/popular-albums", {
       method: "GET",
     })
@@ -26,15 +27,55 @@ const NewReleasesScreen = ({ navigation }) => {
           if (!image.startsWith("https://radiophoenix.nu/")) {
             album.image = "https://radiophoenix.nu/" + album.image;
           }
-          setNewReleases(albums);
+          albums.push(album);
+        });
+      });
+
+    fetch(
+      "https://radiophoenix.nu/secure/channel/1?returnContentOnly=true&filter=&page=2",
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        const albums = response.channel.content.data;
+
+        albums.forEach((album) => {
+          const image: string = album.image;
+          if (!image.startsWith("https://radiophoenix.nu/")) {
+            album.image = "https://radiophoenix.nu/" + album.image;
+          }
+          albums.push(album);
         });
       })
       .catch((error) => {
         console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
       });
+
+    fetch(
+      "https://radiophoenix.nu/secure/channel/1?returnContentOnly=true&filter=&page=3",
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        const albums = response.channel.content.data;
+
+        albums.forEach((album) => {
+          const image: string = album.image;
+          if (!image.startsWith("https://radiophoenix.nu/")) {
+            album.image = "https://radiophoenix.nu/" + album.image;
+          }
+          albums.push(album);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setNewReleases(albums);
   }, []);
 
   return (
